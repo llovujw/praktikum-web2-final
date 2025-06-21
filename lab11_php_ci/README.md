@@ -1,60 +1,93 @@
-# CodeIgniter 4 Framework
+### 1. **CodeIgniter 4 (PHP Framework)**
 
-## What is CodeIgniter?
+> Framework utama untuk membangun backend / server-side logic.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+* Digunakan untuk menangani **routing**, **MVC (Model-View-Controller)**, dan manajemen aplikasi server-side.
+* Menyediakan struktur folder modular, fitur View Cell, Layouting, Validasi Form, Upload Gambar, Pagination, hingga RESTful API.
 
-This repository holds the distributable version of the framework.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+📦 Contoh penggunaan:
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+* `app/Controllers/Artikel.php`
+* `app/Models/ArtikelModel.php`
+* `app/Views/artikel/detail.php`
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+---
 
-## Important Change with index.php
+### 2. **MySQL / MariaDB**
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+> Sistem manajemen basis data relasional (RDBMS) untuk menyimpan data dinamis.
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+* Digunakan untuk menyimpan data artikel, kategori, user, dsb.
+* Diakses via Query Builder dari CodeIgniter (misal: `$db->table()->get()`).
+* Tabel `artikel` terhubung dengan `kategori` melalui foreign key (relasi many-to-one).
 
-**Please** read the user guide for a better explanation of how CI4 works!
+📦 Disimpan di:
 
-## Repository Management
+* `config/Database.php`
+* dan digunakan di `ArtikelModel`, `UserModel`, dll.
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+---
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+### 3. **AJAX (jQuery)**
 
-## Contributing
+> Digunakan untuk mengambil atau menghapus data **tanpa reload halaman** (asynchronous).
 
-We welcome contributions from the community.
+* Dipakai dalam modul **artikel admin (admin\_index)**.
+* Data ditampilkan dan dimanipulasi via JavaScript + jQuery `.ajax()`.
+* Backend menyediakan endpoint di `AjaxController` untuk `GET` & `DELETE`.
 
-Please read the [*Contributing to CodeIgniter*](https://github.com/codeigniter4/CodeIgniter4/blob/develop/CONTRIBUTING.md) section in the development repository.
+📦 Contoh:
 
-## Server Requirements
+```javascript
+$.ajax({
+  url: "/ajax/getData",
+  method: "GET",
+  success: function(data) {
+    // render data artikel ke table
+  }
+});
+```
 
-PHP version 8.1 or higher is required, with the following extensions installed:
+---
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+### 4. **VueJS 3 + Axios**
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - If you are still using PHP 7.4 or 8.0, you should upgrade immediately.
-> - The end of life date for PHP 8.1 will be December 31, 2025.
+> Library frontend JavaScript modern untuk membangun tampilan interaktif + SPA-style.
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+* VueJS 3 digunakan di **praktikum 11** (frontend app) untuk menampilkan dan memanipulasi artikel via form & tabel.
+* `axios` digunakan untuk komunikasi HTTP (GET, POST, PUT, DELETE) ke REST API CodeIgniter 4.
+* App berbasis komponen dan reactive data binding.
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+📦 Contoh:
+
+```javascript
+axios.post('http://localhost/lab11_php_ci/public/post', this.formData)
+```
+
+---
+
+### 5. **HTML5 + CSS3**
+
+> Teknologi markup dan styling untuk membangun antarmuka web yang responsif dan user-friendly.
+
+* HTML digunakan untuk membuat struktur halaman (form, tabel, section).
+* CSS3 digunakan untuk mempercantik layout (warna, spacing, font).
+* Beberapa modul memakai inline CSS, class `.btn`, `.table`, atau bahkan style custom di layout/admin.
+
+📦 Lokasi file:
+
+* `style.css`
+* `assets/css/style.css` (Vue frontend)
+
+---
+
+## 💡 Kesimpulan
+
+Dengan kombinasi ini kamu berhasil membuat:
+
+* Admin panel (CodeIgniter)
+* REST API backend
+* AJAX dashboard
+* Frontend VueJS interaktif
+* Sistem upload + pagination + login
+* Dan semuanya terhubung ke database MySQL/MariaDB
